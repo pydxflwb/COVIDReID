@@ -20,7 +20,7 @@ from extract_feature import GetFeature
 
 # initialize GetFeature
 get_feature = GetFeature(
-    encoder_path="./work\checkpoint/GaitSet/GaitSet_CASIA-B_73_False_256_0.2_128_full_30-80000-encoder.ptm")
+    encoder_path="./work/checkpoint/GaitSet/GaitSet_CASIA-B_73_False_256_0.2_128_full_30-80000-encoder.ptm")
 
 # set the path of sihouettes
 silhouettes_path = "PATH_OF_SILHOUETTES"
