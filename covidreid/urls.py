@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.views.generic import RedirectView
 from . import views
+# from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index),
-    path('database/', views.database),
+    path('', RedirectView.as_view(url='index/')),
+    path('welcome', views.welcome),
+    path('video', views.video),
+    path('about', views.about),
+    path('manual', views.manual),
 ]
+
+# handler404 = sign_views.page_not_found   #handler404 = "你的app.views.函数名"

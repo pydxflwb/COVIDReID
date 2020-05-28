@@ -11,13 +11,13 @@
 ;
 ! function (a) {
     var b = {
-            path: "",
-            defSkin: "default",
-            format: "YYYY-MM-DD",
-            min: "1900-01-01 00:00:00",
-            max: "2099-12-31 23:59:59",
-            isv: !1
-        },
+        path: "",
+        defSkin: "default",
+        format: "YYYY-MM-DD",
+        min: "1900-01-01 00:00:00",
+        max: "2099-12-31 23:59:59",
+        isv: !1
+    },
         c = {},
         d = document,
         e = "createElement",
@@ -28,7 +28,7 @@
         b = b || {};
         try {
             h.event = a.event ? a.event : laydate.caller.arguments[0]
-        } catch (d) {}
+        } catch (d) { }
         return c.run(b), laydate
     }, laydate.v = "1.1", c.getPath = function () {
         var a = document.scripts,

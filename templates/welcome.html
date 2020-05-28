@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles%}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+    <script type="text/javascript" src="{% static 'js/rem.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>校园nCoV-2019接触人员监测系统</title>
+</head>
+
+<body style="visibility: visible;">
+
+    <div class="container-flex" tabindex="0" hidefocus="true">
+        <div class="box-left">
+            <div class="left-top">
+                <div class="current-num">
+                    <div>当前数据库内人数</div>
+                </div>
+            </div>
+            <div class="left-center">
+                <div class="title-box">
+                    <h6>各类人员占比</h6>
+                </div>
+                <div class="chart-box pie-chart">
+                    <div id="pie"></div>
+                    <div>
+                        <div class="pie-data">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left-bottom" class="select">
+                <div class="title-box">
+                    <h6>社区统计数据</h6>
+                    <img class="line-img" src="{% static 'images/line-blue.png' %}" alt="">
+                    <button id="filBtn"><img src="{% static 'images/select_icon.png' %}" alt="">筛选</button>
+                </div>
+                <div class="chart-box">
+                    <div class="filter-con" id="filCon" data-type="1">
+                        <div class="select" tabindex="0" hidefocus="true">
+                            <div class="select-div">
+                                监控区域
+                            </div>
+                            <ul class="select-ul">
+                                <li class="active" data-value="0">全区</li>
+                                <li data-value="1">监控点1</li>
+                                <li data-value="2">监控点2</li>
+                                <li data-value="3">监控点3</li>
+                                <li data-value="4">监控点4</li>
+                                <li data-value="5">监控点5</li>
+                                <li data-value="6">监控点6</li>
+                                <li data-value="7">监控点7</li>
+                            </ul>
+                        </div>
+                        <div class="select" tabindex="0" hidefocus="true">
+                            <div class="select-div">
+                                人员状态
+                            </div>
+                            <ul class="select-ul">
+                                <li class="active" data-value="0">健康</li>
+                                <li data-value="1">确诊</li>
+                                <li data-value="2">疑似</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="gdMap" class="gd-map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box-center">
+            <div class="center-top">
+                <h1 style="font-size: 20px;font-weight: bolder;">校园COVID-19接触人员智能排查系统</h1>
+            </div>
+            <div class="center-center">
+                <div class="weather-box">
+                    <div class="data">
+                        <p class="time" id="time">00:00:00</p>
+                        <p id="date"></p>
+                    </div>
+                    <div class="weather">
+                        <img id="weatherImg" src="{% static 'images/weather/weather_img01.png' %}" alt="">
+                        <div id="weather">
+                            <p class="active">多云</p>
+                            <p>16-22℃</p>
+                            <p>上海市闵行区</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="center-bottom" style="text-align: center;">
+                <div style="display: inline-block;width:100%;">
+                    <video id="target_video" style="width: 500px;" autoplay>
+                        <source src="{% static 'source/videos/c1.mp4' %}" type="video/mp4">
+                    </video>
+                </div>
+                <div style="margin-top: 20px;margin-bottom: 20px;">
+
+                </div>
+                <div style="grid-template: repeat(2,1fr)/repeat({{ num }},1fr);display: inline-block;grid-column-gap: 0px;">
+					
+				{% for one_video in all_video %}
+				    <input
+				        style="width:50px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="{{ one_video.name }}" onclick="changeVideo('/static/{{ one_video.dir }}')">
+				    <!-- <input
+				        style="width:70px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="监控点2" onclick="changeVideo('{% static 'source/videos/c2.mp4' %}')">
+				    <input
+				        style="width:70px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="监控点3" onclick="changeVideo('{% static 'source/videos/c3.mp4' %}')">
+				    <input
+				        style="width:70px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="监控点4" onclick="changeVideo('videos/c4.mp4')">
+				    <input
+				        style="width:70px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="监控点5" onclick="changeVideo('videos/c5.mp4')">
+					<input
+					    style="width:70px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+					    type="button" value="监控点6" onclick="changeVideo('videos/c6.mp4')"> -->
+				{% endfor %}
+                {% for one_video in all_video %}
+					<video autoplay style="width: 90px;" >
+                        <source src="{{ one_video.dir }}" type="video/mp4'">
+                    </video>
+				
+                    <!-- <video style="width: 90px;" autoplay>
+                        <source src="{% static 'source/videos/c2.mp4' %}" type="video/mp4">
+                    </video>
+                    <video style="width: 90px;" autoplay>
+                        <source src="{% static 'source/videos/c3.mp4' %}" type="video/mp4">
+                    </video>
+                    <video style="width: 90px;" autoplay>
+                        <source src="{% static 'source/videos/c4.mp4' %}" type="video/mp4">
+                    </video>
+                    <video style="width: 90px;" autoplay>
+                        <source src="{% static 'source/videos/c5.mp4' %}" type="video/mp4">
+                    </video>
+					<video style="width: 90px;" autoplay>
+					    <source src="{% static 'source/videos/c6.mp4' %}" type="video/mp4">
+					</video> -->
+				{% endfor %}
+				
+
+                </div>
+            </div>
+
+        </div>
+        <div class="box-right">
+            <div class="right-top">
+                <div class="title-box">
+                    <h6 id="barTitle">本周数据</h6>
+                    <img class="line-img" src="{% static 'images/line-blue.png' %}" alt="">
+                    <button data-state=1 id="tabBtn"><img src="{% static 'images/chart_icon.png' %}" alt=""><span>图表</span></button>
+                </div>
+                <p class="unit">单位：人</p>
+                <div class="chart-box">
+                    <div id="chart3" style="width:100%;height:100%;"></div>
+                </div>
+                <div class="data-box" style="display:none;">
+                </div>
+            </div>
+            <div class="right-center">
+                <div class="title-box">
+                    <p id="switchBtn"><span class="active" data-dataType="healthy">健康</span><img class="line-img"
+                            src="{% static 'images/line-blue.png' %}" alt=""><span data-dataType="confirmed">确诊</span><img
+                            class="line-img" src="{% static 'images/line-blue.png' %}" alt=""><span data-dataType="suspected">疑似</span>
+                    </p>
+                    <img class="line-img" src="{% static 'images/line-blue.png' %}" alt="">
+                    <button data-state=1 id="tabBtn2"><img src="{% static 'images/chart_icon.png' %}" alt=""><span>图表</span></button>
+                </div>
+                <div class="data-box">
+                    <table border="1" style="font-size: small;text-align: center;">
+                        <tr>
+                            <th style="width: 20%;color: aliceblue;">人员编号</th>
+                            <th style="width: 20%;color: aliceblue;">健康状态</th>
+                            <th style="width: 40%;color: aliceblue;">相关特征</th>
+                            <th style="width: 20%;color: aliceblue;">记录时间</th>
+                        </tr>
+                        <tr>
+                            <td style="color: aliceblue;">2005260001</td>
+                            <td style="color: aliceblue;">健康</td>
+                            <td style="color: aliceblue;">男性,灰色上衣,黑色短裤</td>
+                            <td style="color: aliceblue;">2020-05-26 15:48:45</td>
+                        </tr>
+                        <tr>
+                            <td style="color: aliceblue;">2005260002</td>
+                            <td style="color: aliceblue;">健康</td>
+                            <td style="color: aliceblue;">女性,黄色上衣,黑色长裤</td>
+                            <td style="color: aliceblue;">2020-05-26 15:49:55</td>
+                        </tr>
+                        <tr>
+                            <td style="color: aliceblue;">2005260003</td>
+                            <td style="color: aliceblue;">健康</td>
+                            <td style="color: aliceblue;">男性,蓝色上衣,黑色短裤</td>
+                            <td style="color: aliceblue;">2020-05-26 15:50:00</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="right-bottom">
+                <div class="title-box">
+                    <p id="switchBtn"><span class="active">数据库</span>
+                    </p>
+                </div>
+                <iframe class="data-box" src="./database.html">
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="pop-up">
+            <span class="close-pop"></span>
+            <h2 class="title">当前数据库内人数</h2>
+            <div class="pop-data-box">
+            </div>
+        </div>
+
+        <div class="pop-up">
+            <span class="close-pop"></span>
+            <h2 class="title">各类人员占比</h2>
+            <div class="chart-box pie-chart">
+                <div id="pie1"></div>
+                <div>
+                    <div class="pie-data">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pop-up">
+            <span class="close-pop"></span>
+            <h2 class="title">社区统计数据 </h2>
+            <div class="filter-con pop-filter" style="display:flex" data-type="3">
+                <div class="select" tabindex="0" hidefocus="true">
+                    <div class="select-div">
+                        监控区域
+                    </div>
+                    <ul class="select-ul">
+                        <li class="active" data-value="0">全区</li>
+                        <li data-value="1">监控点1</li>
+                        <li data-value="2">监控点2</li>
+                        <li data-value="3">监控点3</li>
+                        <li data-value="4">监控点4</li>
+                        <li data-value="5">监控点5</li>
+                        <li data-value="6">监控点6</li>
+                        <li data-value="7">监控点7</li>
+                    </ul>
+                </div>
+                <div class="select" tabindex="0" hidefocus="true">
+                    <div class="select-div">
+                        人员状态
+                    </div>
+                    <ul class="select-ul company">
+                        <li class="active" data-value="0">健康</li>
+                        <li data-value="1">确诊</li>
+                        <li data-value="2">疑似</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-box pop-chart">
+                <div id="gdMaps" class="gd-map"></div>
+            </div>
+        </div>
+
+        <div class="pop-up">
+            <span class="close-pop"></span>
+            <div class="cont-div">
+                <div class="chart-box pop-charts">
+                    <div id="chart4s" style="width:100%;height:95%;"></div>
+                </div>
+            </div>
+
+            <div class="cont-div">
+                <h2 class="title" id="titles"></h2>
+                <button class="btn-class" id="dateBtns"><img src="{% static 'images/data_icon.png' %}" alt="">日期</button>
+                <div class="data-box  pop-time">
+                    <div class="time-box" id="timeBoxs">
+                        <div class="time-div">
+                            <input class="time-input" type="text" value="" id="startTimes">
+                            <img src="{% static 'images/selsct_time.png' %}" alt="">
+                        </div>
+                        <div class="time-div end">
+                            <input class="time-input" type="text" value="" id="endTimes">
+                            <img src="{% static 'images/selsct_time.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="pop-data-box" id="totalProfits">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer/layer.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer/laydate/laydate.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/china.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/data/sjtu.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("body").css('visibility', 'visible');
+        var localData = [$('#teacher').val(), $('#start').val() + '/' + $('#end').val(), $('#leader').val()]
+        localStorage.setItem("data", localData);
+        $('#conBtn').on('click', function () {
+            localData = [$('#teacher').val(), $('#start').val() + '/' + $('#end').val(), $('#leader').val()]
+            if (typeof (Storage) !== "undefined") {
+                localStorage.setItem("data", localData);
+                var arr = localStorage.getItem("data").split(',');
+                $('#name_a').html(arr[0]);
+                $('#date_a').html(arr[1]);
+                $('#lea_a').html(arr[2]);
+            }
+        })
+        $('#fangda').on('click', function () {
+            if ($(this).siblings('ul').is(":hidden")) {
+                $(this).addClass('active').siblings('ul').show();
+            } else {
+                $(this).removeClass('active').siblings('ul').hide();
+            }
+        })
+
+        function chart3(chartType) {
+            var myChart = echarts.init(document.getElementById('chart3'));
+            window.addEventListener('resize', function () {
+                myChart.resize();
+            });
+            var option = {
+                legend: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    showContent: false
+                },
+                dataset: {
+                    source: [
+                        ["日期", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                        ["健康", 128, 278, 418, 89, 428, 28, 188],
+                        ["确诊", 2, 12, 4, 14, 12, 2, 3],
+                        ["疑似", 15, 90, 25, 35, 125, 1, 13],
+                    ]
+                },
+                xAxis: {
+                    type: 'category',
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                yAxis: {
+                    gridIndex: 0,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                grid: {
+                    top: '50%'
+                },
+                series: [{
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row'
+                }, {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row'
+                }, {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row'
+                }, {
+                    type: 'pie',
+                    id: 'pie',
+                    radius: '30%',
+                    center: ['50%', '25%'],
+                    label: {
+                        formatter: '{@2012} ({d}%)',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    encode: {
+                        itemName: 'product',
+                        value: '2012',
+                        tooltip: '2012'
+                    }
+                }]
+            };
+            myChart.on('updateAxisPointer', function (event) {
+                var xAxisInfo = event.axesInfo[0];
+                if (xAxisInfo) {
+                    var dimension = xAxisInfo.value + 1;
+                    myChart.setOption({
+                        series: {
+                            id: 'pie',
+                            label: {
+                                formatter: '{@[' + dimension + ']} ({d}%)',
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            encode: {
+                                value: dimension,
+                                tooltip: dimension
+                            }
+                        }
+                    });
+                }
+            });
+            myChart.setOption(option);
+        }
+        chart3('');
+    })
+</script>
+<script>
+    function changeVideo(target_video) {
+        document.getElementById("target_video").src = target_video;
+    }
+</script>
+
+</html>
