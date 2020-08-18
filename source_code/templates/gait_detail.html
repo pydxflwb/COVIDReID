@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>详细信息</title>
+</head>
+
+<body>
+    <div id="show" style="width: 90%;margin: auto;">
+    <img src="/static/{{ img }}" style="width:90%">
+    </div>
+    <!-- <script>
+        var query = window.location.search;
+        var src = window.location.search.substring(query.indexOf('=') + 1);
+        document.getElementById("show").innerHTML = "<img width=\"90%;\"src=" + src + ">";
+    </script> -->
+</body>
+
+</html>

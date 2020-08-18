@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static%}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="renderer" content="webkit" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1.0,user-scalable=no"
+        />
+
+        <script type="text/javascript" src="{% static 'js/rem.js' %}"></script>
+        <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <title>校园nCoV-2019接触人员监测系统</title>
+    </head>
+
+    <body style="visibility: visible;">
+        <div class="container-flex" tabindex="0" hidefocus="true">
+            <div class="box-left">
+                <div class="left-top">
+                    <div class="current-num">
+                        <div>当前数据库内行人图像数</div>
+                        <p id="current_num"></p>
+                    </div>
+                </div>
+                <div class="left-center">
+                    <div class="title-box">
+                        <h6>各类人员图像占比</h6>
+                    </div>
+                    <div class="chart-box pie-chart">
+                        <div id="pie"></div>
+                        <div>
+                            <div class="pie-data"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="left-bottom" class="select">
+                    <div class="title-box">
+                        <p id="switchBtn">
+                            <span
+                                class="active"
+                                data-dataType="healthy"
+                                id="healthy_table"
+                            >
+                                健康
+                            </span>
+                            <img
+                                class="line-img"
+                                src="{% static 'images/line-blue.png' %}"
+                                alt=""
+                            />
+                            <span
+                                data-dataType="confirmed"
+                                id="confirmed_table"
+                            >
+                                确诊
+                            </span>
+                            <img
+                                class="line-img"
+                                src="{% static 'images/line-blue.png' %}"
+                                alt=""
+                            />
+                            <span
+                                data-dataType="suspected"
+                                id="suspected_table"
+                            >
+                                疑似
+                            </span>
+                        </p>
+                        <button data-state="1" id="tabBtn2"></button>
+                    </div>
+                    <div class="data-box">
+                        <iframe
+                            id="healthy_table_frame"
+                            class="data-box"
+                            src="/data/healthy_table"
+                        ></iframe>
+                        <iframe
+                            id="suspected_table_frame"
+                            class="data-box"
+                            src="/data/suspected_table"
+                            hidden
+                        ></iframe>
+                        <iframe
+                            id="confirmed_table_frame"
+                            class="data-box"
+                            src="/data/confirmed_table"
+                            hidden
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="box-center">
+                <div class="center-top">
+                    <h1 style="font-size: 20px; font-weight: bolder;">
+                        校园COVID-19接触人员智能排查系统
+                    </h1>
+                </div>
+                <div class="center-center">
+                    <div class="weather-box">
+                        <div class="data">
+                            <p class="time" id="time">00:00:00</p>
+                            <p id="date"></p>
+                        </div>
+                        <div class="weather">
+                            <img
+                                id="weatherImg"
+                                src="{% static 'images/weather/weather_img01.png' %}"
+                                alt=""
+                            />
+                            <div id="weather">
+                                <p class="active">晴</p>
+                                <p>xx-xx℃</p>
+                                <p>xx市xx区</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="center-bottom" style="text-align: center;">
+                    <div style="display: inline-block; width: 100%;">
+                        <video id="target_video" style="width: 500px;" autoplay>
+                            <source
+                                src="{% static 'source/videos/c1_0808.mp4' %}"
+                                type="video/mp4"
+                            />
+                        </video>
+                    </div>
+                    <div style="margin-top: 10px; margin-bottom: 10px;"></div>
+                    <div>
+                        <input id="calendar" style="width: 300px; height: 30px; font-size: 20px;" type="date" value="2020-08-08" min="2020-08-08" max="2020-08-10"/>
+                    </div>
+                    <div
+                        style="grid-template: repeat(2,1fr)/repeat({{ num }},1fr);display: inline-block;grid-column-gap: 0px;"
+                    >
+                        {% for one_video in all_video %}
+                        <input style="
+                                width: 70px;
+                                margin-left: 10px;
+                                margin-right: 10px;
+                                font-size: initial;
+                                height: 26px;
+                                margin-top: 0px;
+                                color:#fff;
+                                border:3px solid #fff;
+                                border-radius:10px;
+                                background:#233d55;
+                                cursor:pointer;
+                            "
+                            type="button"
+                            value="{{ one_video.name }}"
+                            onclick="changeVideo('/static/{{ one_video.dir }}')"
+                        />
+
+                        {% endfor %} {% for one_video in all_video %}
+                        <video autoplay style="width: 90px;">
+                            <source
+                                src="{{ one_video.dir }}"
+                                type="video/mp4'"
+                            />
+                        </video>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="box-right">
+                <div class="right-top">
+                    <div class="title-box">
+                        <h6 id="barTitle">本周数据</h6>
+                        <img
+                            class="line-img"
+                            src="{% static 'images/line-blue.png' %}"
+                            alt=""
+                        />
+                        <button data-state="1" id="tabBtn">
+                            <img
+                                src="{% static 'images/chart_icon.png' %}"
+                                alt=""
+                            /><span>图表</span>
+                        </button>
+                    </div>
+                    <p class="unit">单位：人</p>
+                    <div class="chart-box">
+                        <div
+                            id="chart3"
+                            style="width: 100%; height: 100%;"
+                        ></div>
+                    </div>
+                    <div class="data-box" style="display: none;"></div>
+                </div>
+                <div class="right-center">
+                    <div class="title-box">
+                        <p id="switchBtn"><span class="active">数据库</span></p>
+                    </div>
+                    <iframe class="data-box" src="/data/neo4j"> </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="pop-up">
+                <span class="close-pop"></span>
+                <h2 class="title">当前数据库内行人图像数</h2>
+                <div class="pop-data-box"></div>
+            </div>
+
+            <div class="pop-up">
+                <span class="close-pop"></span>
+                <h2 class="title">各类人员图像占比</h2>
+                <div class="chart-box pie-chart">
+                    <div id="pie1"></div>
+                    <div>
+                        <div class="pie-data"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pop-up">
+                <span class="close-pop"></span>
+                <h2 class="title">社区统计数据</h2>
+                <div
+                    class="filter-con pop-filter"
+                    style="display: flex;"
+                    data-type="3"
+                >
+                    <div class="select" tabindex="0" hidefocus="true">
+                        <div class="select-div">
+                            监控区域
+                        </div>
+                        <ul class="select-ul">
+                            <li class="active" data-value="0">全区</li>
+                            <li data-value="1">监控点1</li>
+                            <li data-value="2">监控点2</li>
+                            <li data-value="3">监控点3</li>
+                            <li data-value="4">监控点4</li>
+                            <li data-value="5">监控点5</li>
+                            <li data-value="6">监控点6</li>
+                        </ul>
+                    </div>
+                    <div class="select" tabindex="0" hidefocus="true">
+                        <div class="select-div">
+                            人员状态
+                        </div>
+                        <ul class="select-ul company">
+                            <li class="active" data-value="0">健康</li>
+                            <li data-value="1">确诊</li>
+                            <li data-value="2">疑似</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chart-box pop-chart">
+                    <div id="gdMaps" class="gd-map"></div>
+                </div>
+            </div>
+
+            <div class="pop-up">
+                <span class="close-pop"></span>
+                <div class="cont-div">
+                    <div class="chart-box pop-charts">
+                        <div
+                            id="chart4s"
+                            style="width: 100%; height: 95%;"
+                        ></div>
+                    </div>
+                </div>
+
+                <div class="cont-div">
+                    <h2 class="title" id="titles"></h2>
+                    <button class="btn-class" id="dateBtns">
+                        <img
+                            src="{% static 'images/data_icon.png' %}"
+                            alt=""
+                        />日期
+                    </button>
+                    <div class="data-box pop-time">
+                        <div class="time-box" id="timeBoxs">
+                            <div class="time-div">
+                                <input
+                                    class="time-input"
+                                    type="text"
+                                    value=""
+                                    id="startTimes"
+                                />
+                                <img
+                                    src="{% static 'images/selsct_time.png' %}"
+                                    alt=""
+                                />
+                            </div>
+                            <div class="time-div end">
+                                <input
+                                    class="time-input"
+                                    type="text"
+                                    value=""
+                                    id="endTimes"
+                                />
+                                <img
+                                    src="{% static 'images/selsct_time.png' %}"
+                                    alt=""
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pop-data-box" id="totalProfits">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script
+        type="text/javascript"
+        src="{% static 'js/jquery.min.js' %}"
+    ></script>
+    <script
+        type="text/javascript"
+        src="{% static 'js/layer/layer.min.js' %}"
+    ></script>
+    <script
+        type="text/javascript"
+        src="{% static 'js/layer/laydate/laydate.js' %}"
+    ></script>
+    <script
+        type="text/javascript"
+        src="{% static 'js/echarts.min.js' %}"
+    ></script>
+    <script type="text/javascript" src="{% static 'js/china.js' %}"></script>
+    <script
+        type="text/javascript"
+        src="{% static 'js/data/sjtu.js' %}"
+    ></script>
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#confirmed_table").click(function () {
+                $("#healthy_table_frame").hide();
+                $("#confirmed_table_frame").show();
+                $("#suspected_table_frame").hide();
+            });
+            $("#healthy_table").click(function () {
+                $("#healthy_table_frame").show();
+                $("#confirmed_table_frame").hide();
+                $("#suspected_table_frame").hide();
+            });
+            $("#suspected_table").click(function () {
+                $("#healthy_table_frame").hide();
+                $("#confirmed_table_frame").hide();
+                $("#suspected_table_frame").show();
+            });
+            $("body").css("visibility", "visible");
+            var localData = [
+                $("#teacher").val(),
+                $("#start").val() + "/" + $("#end").val(),
+                $("#leader").val(),
+            ];
+            localStorage.setItem("data", localData);
+            $("#conBtn").on("click", function () {
+                localData = [
+                    $("#teacher").val(),
+                    $("#start").val() + "/" + $("#end").val(),
+                    $("#leader").val(),
+                ];
+                if (typeof Storage !== "undefined") {
+                    localStorage.setItem("data", localData);
+                    var arr = localStorage.getItem("data").split(",");
+                    $("#name_a").html(arr[0]);
+                    $("#date_a").html(arr[1]);
+                    $("#lea_a").html(arr[2]);
+                }
+            });
+            $("#fangda").on("click", function () {
+                if ($(this).siblings("ul").is(":hidden")) {
+                    $(this).addClass("active").siblings("ul").show();
+                } else {
+                    $(this).removeClass("active").siblings("ul").hide();
+                }
+            });
+
+            // 饼图初始化与相关参数
+            var health_ratio_pie_chart = echarts.init(
+                document.getElementById("pie")
+            );
+            window.addEventListener("resize", function () {
+                health_ratio_pie_chart.resize();
+            });
+
+            health_ratio_pie_chart.setOption({
+                color: startColor,
+                series: [
+                    {
+                        type: "pie",
+                        name: "各类人员占比",
+                    },
+                ],
+            });
+            // 饼图与折线图的初始化与相关参数
+            var combined_chart = echarts.init(
+                document.getElementById("chart3")
+            );
+            window.addEventListener("resize", function () {
+                combined_chart.resize();
+            });
+            combined_chart.on("updateAxisPointer", function (event) {
+                var xAxisInfo = event.axesInfo[0];
+                if (xAxisInfo) {
+                    var dimension = xAxisInfo.value + 1;
+                    combined_chart.setOption({
+                        series: {
+                            id: "pie",
+                            label: {
+                                formatter: "{@[" + dimension + "]} ({d}%)",
+                                textStyle: {
+                                    color: startColor,
+                                },
+                            },
+                            color: startColor,
+                            encode: {
+                                value: dimension,
+                                tooltip: dimension,
+                            },
+                        },
+                    });
+                }
+            });
+            // 设置每6秒更新
+            $(document).ready(function () {
+                update();
+                setInterval(update, 6000);
+            });
+            function update() {
+                var str = "";
+                var sum = 0;
+                $.ajax({
+                    url: "http://127.0.0.1:8000/data/get_welcome_data",
+                    dataType: "json",
+                    type: "GET",
+                    success: function (data) {
+                        // 绘制饼图
+                        var health_ratio_pie = data.health_ratio_pie;
+                        for (
+                            let index = 0;
+                            index < health_ratio_pie.length;
+                            index++
+                        ) {
+                            sum += health_ratio_pie[index].value;
+                        }
+                        document.getElementById("current_num").innerHTML = sum;
+                        if (sum != 0) {
+                            for (var i = 0; i < health_ratio_pie.length; i++) {
+                                str +=
+                                    '<p><span><i class="legend" style="background:' +
+                                    startColor[i] +
+                                    '"></i></span>' +
+                                    health_ratio_pie[i].name +
+                                    '<span class="pie-number" style="color:' +
+                                    startColor[i] +
+                                    '">' +
+                                    health_ratio_pie[i].value +
+                                    "</span>" +
+                                    Number(
+                                        (health_ratio_pie[i].value / sum) * 100
+                                    ).toFixed(2) +
+                                    "%</p>";
+                            }
+                        } else {
+                            for (var i = 0; i < health_ratio_pie.length; i++) {
+                                str +=
+                                    '<p><span><i class="legend" style="background:' +
+                                    startColor[i] +
+                                    '"></i></span>' +
+                                    health_ratio_pie[i].name +
+                                    '<span class="pie-number" style="color:' +
+                                    startColor[i] +
+                                    '">' +
+                                    health_ratio_pie[i].value +
+                                    "</span>" +
+                                    Number(0).toFixed(2) +
+                                    "%</p>";
+                            }
+                        }
+                        document.getElementsByClassName(
+                            "pie-data"
+                        )[0].innerHTML = str;
+                        health_ratio_pie_chart.setOption({
+                            series: {
+                                data: health_ratio_pie,
+                            },
+                        });
+
+                        // 绘制组合图
+                        combined_chart.setOption({
+                            legend: {
+                                textStyle: {
+                                    color: startColor,
+                                },
+                            },
+                            tooltip: {
+                                trigger: "axis",
+                                showContent: false,
+                            },
+                            dataset: {
+                                source: data.health_pie_line_combine,
+                            },
+                            xAxis: {
+                                type: "category",
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: "#fff",
+                                    },
+                                },
+                            },
+                            yAxis: {
+                                gridIndex: 0,
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: "#fff",
+                                    },
+                                },
+                            },
+                            grid: {
+                                top: "50%",
+                            },
+                            series: [
+                                {
+                                    type: "line",
+                                    smooth: true,
+                                    seriesLayoutBy: "row",
+                                },
+                                {
+                                    type: "line",
+                                    smooth: true,
+                                    seriesLayoutBy: "row",
+                                },
+                                {
+                                    type: "line",
+                                    smooth: true,
+                                    seriesLayoutBy: "row",
+                                },
+                                {
+                                    type: "pie",
+                                    id: "pie",
+                                    radius: "30%",
+                                    center: ["50%", "25%"],
+                                    label: {
+                                        formatter: "{@2012} ({d}%)",
+                                        textStyle: {
+                                            color: "#fff",
+                                        },
+                                    },
+                                    encode: {
+                                        itemName: "product",
+                                        value: "2012",
+                                        tooltip: "2012",
+                                    },
+                                },
+                            ],
+                        });
+                    },
+                });
+            }
+        });
+    </script>
+    <script>
+        {#function changeVideo(target_video) {#}
+        {#    document.getElementById("target_video").src = target_video;#}
+        {# } #}
+        function changeVideo(value) {
+            console.log(value)
+            var date_new;
+            date_new = document.getElementById("calendar").value;
+            if (date_new == "2020-08-08")
+            {
+                document.getElementById("target_video").src = value.split("_")[0] + '_0808.mp4'
+            }
+            else if (date_new == "2020-08-09")
+            {
+                document.getElementById("target_video").src = value.split("_")[0] + '_0809.mp4'
+            }
+            else
+            {
+                document.getElementById("target_video").src = value.split("_")[0] + '_0810.mp4'
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>统计页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="{% static 'css/font.css' %}">
+    <link rel="stylesheet" href="{% static 'css/xadmin.css' %}">
+    <script src="{% static 'lib/layui/layui.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.js' %}"></script>
+    <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-space12" style="text-align: center;">
+            <div class="layui-row" style="display: inline-block;width:100%;">
+                    <video id="target_video" style="width: 600px; border:#fff " autoplay>
+                        <source src="{% static 'source/videos/c1_0808.mp4' %}" type="video/mp4">
+                    </video>
+            </div>
+            <div class="layui-row" style="grid-template: repeat(6,1fr)/repeat(6,1fr);display: inline-block;">
+                {% for one_video in all_video %}
+                    <video id="{{ one_video.name }}" style="width: 180px;" autoplay>
+                        <source src= "/static/{{ one_video.dir }} " type="video/mp4">
+                    </video>
+                {% endfor %}
+            </div>
+            <div>
+                {% for one_video in all_video %}
+				    <input
+				        style="width:50px;margin-left: 10px;margin-right: 10px;font-size: initial;height:25px;margin-top: 0px;"
+				        type="button" value="{{ one_video.name }}" onclick="changeVideo('{{ one_video.name }}')">
+                {% endfor %}
+            </div>
+            <!-- <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">监控点1</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div style="align-items: center;"
+                            onclick="xadmin.open('详细信息','./video_detail.html?src=./images/center_n.mp4')">
+                            <video width="90%" height="90%" autoplay>
+                                <source src="./images/center_n.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">监控点2</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div style="align-items: center;"
+                            onclick="xadmin.open('详细信息','./video_detail.html?src=./images/left_n.mp4')">
+                            <video width="90%" height="90%" autoplay>
+                                <source src="./images/left_n.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">监控点3</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div style="align-items: center;"
+                            onclick="xadmin.open('详细信息','./video_detail.html?src=./images/right_n.mp4')">
+                            <video width="90%" height="90%" autoplay>
+                                <source src="./images/right_n.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">监控点4</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div style="align-items: center;"
+                            onclick="xadmin.open('详细信息','./video_detail.html?src=./images/right_n.mp4')">
+                            <video width="90%" height="90%" autoplay>
+                                <source src="./images/right_n.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    </div>
+    <script>
+        function changeVideo(one_video) {
+            //var target = document.getElementById("target_video");
+            //target.src = "/static/source/videos/" + one_video + ".mp4";
+            var source_video = document.getElementById(one_video);
+            //source_video.src = "/static/source/videos/c9.mp4";
+            var target = document.getElementById("target_video");
+            target.src = "/static/source/videos/" + one_video + "_0808.mp4";
+            target.currentTime = source_video.currentTime;
+            /*layer.confirm(String(source_video.currentTime) + String(target.currentTime), function (index) {
+
+                if (one_video == "c1.mp4") {
+                    layer.msg('已停用!', { icon: 5, time: 1000 });
+                } else {
+                    layer.msg('已启用', { icon: 5, time: 1000 });
+                }
+
+            });*/
+        }
+        function detail() {
+            xadmin.open('详细信息','./video_detail.html?src='+document.getElementById("target_video").src)
+        }
+    </script>
+
+</body>
+
+</html>

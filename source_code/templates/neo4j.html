@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    {% load static %}
+    <head >
+        <meta charset="UTF-8" />
+        <title>统计页面</title>
+        <meta name="renderer" content="webkit" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta
+            name="viewport"
+            content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
+        />
+        <link rel="stylesheet" href="{% static 'css/font.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/xadmin.css' %}" />
+        <script
+            src="{% static 'lib/layui/layui.js' %}"
+            charset="utf-8"
+        ></script>
+        <script
+            type="text/javascript"
+            src="{% static 'js/xadmin.js' %}"
+        ></script>
+        <style type="text/css">
+            html,
+            body {
+                font: 16pt arial;
+            }
+
+            .viz_type {
+                width: 90%;
+                height: 90%;
+                border: 1px solid lightgray;
+                font: 22pt arial;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+        <script src="{%  static 'js/jquery.min.js' %}"></script>
+        <script src="{%  static 'js/neovis.js' %}"></script>
+        <script type="text/javascript">
+            var viz;
+
+            function draw() {
+                var config = {
+                    container_id: "viz",
+                    server_url: "bolt://127.0.0.1:7687",
+                    server_user: "neo4j",
+                    server_password: "123456",
+                    arrows: true,
+                    hierarchical_sort_method: "directed",
+                    labels: {
+                        "1": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "2": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "3": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "4": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "5": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "6": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "7": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "8": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "9": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "10": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        "11": {
+                            caption: "reID",
+                            size: 1,
+                            title_properties: [
+                                "path",
+                                "trackID",
+                                "endtime",
+                                "health",
+                                "attributes",
+                                "starttime",
+                                "reID",
+                                "camera",
+                            ],
+                        },
+                        Camera: {
+                            caption: "name",
+                            size: 2,
+                            title_properties: ["name"],
+                        },
+                    },
+                    relationships: {
+                        appear: {
+                            thickness: "weight",
+                            caption: true,
+                        },
+                        contact: {
+                            thickness: "weight",
+                            caption: true,
+                        },
+                        is_predecessor_of: {
+                            thickness: "weight",
+                            caption: true,
+                        },
+                        is_successor_of: {
+                            thickness: "weight",
+                            caption: true,
+                        },
+                    },
+                    initial_cypher: "MATCH (n)-[r]-(m) RETURN *",
+                };
+
+                viz = new NeoVis.default(config);
+                viz.render();
+                console.log(viz);
+            }
+        </script>
+    </head>
+
+    <body onload="draw()" style="background:rgb(26,27,33)">
+        <div id="viz" class="viz_type" style="background: rgb(255,255,255)"></div>
+        <div
+            style="
+                width: 90%;
+                border: 1px solid lightgray;
+                font: 15pt;
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, 0);
+                margin-top: 10px;
+                background: #efeff0;
+            "
+        >
+            <span>查询行人信息</span>
+            <input
+                type="text"
+                name="query_id"
+                id="query_id"
+                placeholder="请输入行人ID，留空表示全部"
+            />
+            <span>查询摄像头信息</span>
+            <input
+                type="text"
+                name="query_cam"
+                id="query_cam"
+                placeholder="请输入摄像头编号，留空表示全部"
+            />
+            <!-- 提交查询命令 -->
+            <input type="submit" value="查询" id="submit_query" />
+            <input type="button" value="显示所有确诊者" id="query_confirmed" />
+            <input
+                type="button"
+                value="显示所有密切接触者"
+                id="query_suspected"
+            />
+        </div>
+    </body>
+
+    <!-- 如需启用命令输入功能可以取消此处注释 -->
+    <script>
+        $("#submit_query").click(function () {
+            // 获取查询框中的内容
+            var reID = $("#query_id").val();
+            var cam = $("#query_cam").val();
+            // 若无输入，则输出全部点和关系
+            if (reID.length == 0 && cam.length == 0) {
+                var cypher = "MATCH (n)-[r]-(m) RETURN *";
+                viz.renderWithCypher(cypher);
+            } else {
+                // 若指定行人
+                if (reID.length != 0) {
+                    reID = " n.reID = 'r0" + reID + "' ";
+                    // 指定摄像头
+                    if (cam.length != 0) {
+                        cam = " m.name = '" + cam + "' ";
+                        var cypher =
+                            "MATCH (n)-[rel]-(m) WHERE " +
+                            reID +
+                            " AND " +
+                            cam +
+                            "RETURN *";
+                    } else {
+                        // 未指定摄像头
+                        var cypher =
+                            "MATCH (n)-[rel]-(m) WHERE " + reID + " RETURN *";
+                    }
+                } else {
+                    // 仅指定摄像头
+                    cam = " m.name = '" + cam + "' ";
+                    var cypher =
+                        "MATCH (n)-[rel]-(m) WHERE " + cam + " RETURN *";
+                }
+                viz.renderWithCypher(cypher);
+            }
+        });
+
+        $("#query_confirmed").click(function () {
+            var cypher = "MATCH (n)-[r]-(m) WHERE n.health=2 RETURN *";
+            viz.renderWithCypher(cypher);
+        });
+
+        $("#query_suspected").click(function () {
+            var cypher = "MATCH (n)-[r]-(m) WHERE n.health=1 RETURN *";
+            viz.renderWithCypher(cypher);
+        });
+    </script>
+</html>
