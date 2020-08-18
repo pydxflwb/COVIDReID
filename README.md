@@ -24,6 +24,7 @@ __注意__:请确保neo4j服务处于启动状态。 datamanager/view.py中可�
 6. python manage.py runserver启动系统网页，登录(admin, 123456)
  
 7. *Extra* 除了网页系统还想运行一下其它算法，了解系统更多原理:
+  * 下载 [部分算法](https://pan.baidu.com/s/1-6fIYjbHywIhcb4snNfc9w)  提取码:2hzi
   * 参考部分static文件夹数据夹中的代码
   * 其它算法参考“系统组成”一节提到的算法
   * 更多问题请联系pydxflwb@sjtu.edu.cn，或提出issues
