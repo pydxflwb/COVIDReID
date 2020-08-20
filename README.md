@@ -33,8 +33,8 @@ __注意__:请确保neo4j服务处于启动状态。 datamanager/view.py中可�
 ## Info 
 
 作者：
-  * [肖 鹏宇](github.com/pydxflwb) (owner of this repo)
-  * [曹 昊天](github.com/caohaotiantian)
+  * [肖 鹏宇](https://github.com/pydxflwb) (owner of this repo)
+  * [曹 昊天](https://github.com/caohaotiantian)
   * [袁 鑫](https://github.com/yx3266) 
   * [兰 焜耀](https://github.com/lankunyao)
 
