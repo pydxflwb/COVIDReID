@@ -1,4 +1,5 @@
 # CovidReid 校园COVID19接触人员智能排查系统
+* CISCN2020 作品赛 一等奖 参赛作品
 
 ## 系统组成
 * 在以下相关算法基础上进行改进:
@@ -30,9 +31,10 @@ __注意__:请确保neo4j服务处于启动状态。 datamanager/view.py中可�
   * 更多问题请联系pydxflwb@sjtu.edu.cn，或提出issues
 
 ## Info 
-本系统2020.08.18进行公开
+
 作者：
-  * [Pengyu Xiao](github.com/pydxflwb)
-  * [Haotian Cao](github.com/caohaotiantian)
-  * [Xin Yuan](https://github.com/yx3266) 
-  * [Kunyao Lan](https://github.com/lankunyao)
+  * [肖 鹏宇](github.com/pydxflwb) (owner of this repo)
+  * [曹 昊天](github.com/caohaotiantian)
+  * [袁 鑫](https://github.com/yx3266) 
+  * [兰 焜耀](https://github.com/lankunyao)
+上海交通大学 网络空间安全学院
