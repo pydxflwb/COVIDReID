@@ -10,7 +10,7 @@
 * 使用数据库: neo4j v4
 
 ## 使用
-* 由于某些细节实现工作量和时间问题，本系统部分数据细节暂时未在Github公开。如有需要了解系统更多细节或实装使用，请联系pydxflwb@sjtu.edu.cn
+* 由于某些细节实现过程中的实际问题，本系统部分数据无法在Github提供cleaned-data。如有需要了解系统更多细节或实装使用，请联系pydxflwb@sjtu.edu.cn
 
 1. Clone Github代码
 2. 下载static数据:[BaiduNetDisk](https://pan.baidu.com/s/1N6QTbW30bO3i74IGh6KpXg) 提取码:k8nu
